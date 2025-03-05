@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>signup</title>
+    <link rel="stylesheet" href="/signup.css">
+</head>
+<body>
+    <div class="form-container">
+        <h2>Signup</h2>
+        <form action="/signup" method="post" enctype="multipart/form-data">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="username" placeholder="Enter your Name" required autocomplete="off">
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password" placeholder="password">
+            <label for="Gsuite">Gsuite</label>
+            <input type="text" id="Gsuite" name="Gsuite" placeholder="Enter Gsuite">
+            <label for="enrollment_number">enrollment_number</label>
+            <input type="text" name="enrollment_number" placeholder="Enrollment Number" required>
+            <label for="department">Department</label>
+            <input type="text" name="department" placeholder="Enter your Department" required>
+            <label for="mobile">mobile</label>
+            <input type="text" name="mobile" placeholder="Mobile Number" required>
+            <label for="year">year</label>
+            <input type="text" name="year" placeholder="enter the year of your course">
+            <label for="image">Upload Image</label>
+            <input type="file" name="userImage" id="userImage">
+            <button type="submit" class="submit-btn">Signup</button>
+        </form>
+    </div>
+</body>
+</html>

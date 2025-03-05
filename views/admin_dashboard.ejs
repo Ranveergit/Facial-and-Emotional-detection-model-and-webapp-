@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="/admindashboard.css">
+  <style>
+    /* Custom styles for the toggle button */
+    .toggleBtn {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 34px;
+      border-radius: 34px;
+      background-color: #ccc;
+      cursor: pointer;
+    }
+
+    .toggleBtn .slider {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #fff;
+      border-radius: 34px;
+      transition: 0.4s; /* Transition for the entire slider */
+    }
+
+    .toggleBtn.approved .slider {
+      background-color: #4CAF50;
+    }
+
+    .toggleBtn.denied .slider {
+      background-color: #f44336;
+    }
+
+    .toggleBtn .slider:before {
+      position: absolute;
+      content: "";
+      height: 26px;
+      width: 26px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      border-radius: 50%;
+      transition: 0.4s; /* Transition for the thumb */
+    }
+
+    .toggleBtn.approved .slider:before {
+      transform: translateX(26px);
+    }
+
+    .toggleBtn.denied .slider:before {
+      transform: translateX(0);
+    }
+
+    .error-message {
+      color: red;
+    }
+
+    /* Hide the approved users section by default */
+    .approvedUsers {
+      display: none;
+    }
+    .logout{
+    padding: 10px 20px; /* Adjust padding as needed */
+    background-color: #ff6347; /* Choose your desired background color */
+    color: #fff; /* Text color */
+    border: none; /* Remove border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Show pointer on hover */
+    position: absolute; /* Position the button absolutely */
+    top: 10px; /* 10px from the top */
+    right: 10px; /* 10px from the right */
+}
+
+.logout:hover {
+    background-color: #ff4837; 
+}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Admin Dashboard</h1>
+  </header>
+  <main>
+    <section class="pendingUsers">
+      <button class="logout" onclick="logout()">Logout</button>
+      <h2>Pending Users</h2>
+      <table>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Enrollment Number</th>
+          <th>Department</th>
+          <th>Mobile</th>
+          <th>Year</th>
+          <th>Approval Status</th>
+          <th>Actions</th>
+        </tr>
+        <% if (pendingUsers.length === 0) { %>
+          <tr>
+            <td colspan="8">No pending users found.</td>
+          </tr>
+        <% } else { %>
+          <% pendingUsers.forEach(user => { %>
+            <tr data-user-id="<%= user._id %>">
+              <td><%= user.name %></td>
+              <td><%= user.Gsuite %></td>
+              <td><%= user.enrollment_number %></td>
+              <td><%= user.department %></td>
+              <td><%= user.mobile %></td>
+              <td><%= user.year %></td>
+              <td>
+                <button class="toggleBtn <%= user.approved ? 'approved' : 'denied' %>" data-user-id="<%= user._id %>" onclick="toggleApproval(this)">
+                  <span class="slider"></span>
+                </button>
+              </td>
+              <td>
+                <button class="denyBtn" onclick="denyUser('<%= user._id %>')">Deny</button>
+              </td>
+            </tr>
+          <% }) %>
+        <% } %>
+      </table>
+    </section>
+
+    <div class="error-message" id="error-message"></div>
+
+    <button id="viewApprovedUsersBtn"onclick="location.href='adminlogin/admindashboard/approveduser'">View Approved Users</button>
+
+    <div class="error-message" id="error-message"></div>
+  </main>
+  <script  src="/admindash.js"></script>
+  <script>
+    function logout() {
+        alert('Logout successful!');
+        window.location.href = 'adminlogin'; 
+    }
+</script>
+
+</body>
+</html>

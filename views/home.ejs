@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <!-- Include any necessary stylesheets or CSS frameworks -->
+    <link rel="stylesheet" href="home.css">
+</head>
+<body>
+    <header>
+        <h1>User Profile</h1>
+    </header>
+    <main>
+        <div class="container">
+            <!-- Hidden input field to store userId -->
+            <input type="hidden" id="userId" value="<%= user._id %>">
+
+            <button onclick="logout()">Logout</button>
+            <button onclick="location.href='attendancestats'">See Attendance</button> <!-- New button added -->
+            <div class="user-info">
+                <!-- Your user information -->
+                <h2>Welcome, <%= user.name %>!</h2>
+                <div class="user-image">
+                    <img src="<%= user.userImage %>" alt="User Profile Picture">
+                </div>
+                <p><strong>Email:</strong> <%= user.Gsuite %></p>
+                <p><strong>Enrollment Number:</strong> <%= user.enrollment_number %></p>
+                <p><strong>Department:</strong> <%= user.department %></p>
+                <p><strong>Mobile:</strong> <%= user.mobile %></p>
+                <p><strong>Year:</strong> <%= user.year %></p>
+             
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function logout() {
+            const userIdElement = document.getElementById('userId');
+
+            if(userIdElement) {
+                const userId = userIdElement.value;
+
+                // Redirect to the logout route with userId as a query parameter
+                window.location.href = `/logout?userId=${userId}`;
+            } else {
+                console.error("userId element not found");
+            }
+        }
+    </script>
+</body>
+</html>

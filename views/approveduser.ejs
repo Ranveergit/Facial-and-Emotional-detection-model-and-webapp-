@@ -1,0 +1,78 @@
+<!-- approvedUsers.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Approved Users</title>
+    <!-- Include any necessary stylesheets or CSS frameworks -->
+    <link rel="stylesheet" href="/approved.css">
+</head>
+<body>
+    <header>
+        <h1>Approved Users</h1>
+    </header>
+    <main>
+        <div class="container">
+            <% approvedUsers.forEach(user => { %>
+                <div class="user-card">
+                    <!-- See Attendance button -->
+                    <a href="/approved/stats/<%= user._id %>" class="seeAttendanceButton">See Attendance</a>
+
+                    <% if (user.userImage) { %>
+                        <img src="<%= user.userImage %>" alt="User Avatar">
+                    <% } else { %>
+                        <img src="/05.png" alt="Default Avatar">
+                    <% } %>
+                    <h3><%= user.name %></h3>
+                    <p><strong>Email:</strong> <%= user.Gsuite %></p>
+                    <p><strong>Enrollment Number:</strong> <%= user.enrollment_number %></p>
+                    <p><strong>Department:</strong> <%= user.department %></p>
+                    <p><strong>Mobile:</strong> <%= user.mobile %></p>
+                    <p><strong>Year:</strong> <%= user.year %></p>
+                    <!-- Add more user information as needed -->
+
+                    <!-- Toggle button to activate/deactivate user -->
+                    <button data-user-id="<%= user._id %>" class="toggleButton <%= user.active ? 'active' : 'inactive' %>">
+                        <%= user.active ? 'Deactivate' : 'Activate' %>
+                    </button>
+                </div>
+            <% }) %>
+        </div>
+    </main>
+
+    <!-- Include JavaScript to handle toggling functionality -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const toggleButtons = document.querySelectorAll('.toggleButton');
+
+            toggleButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const userId = button.getAttribute('data-user-id');
+
+                    fetch(`/adminlogin/admindashboard/approveduser/${userId}`, {
+                        method: 'PATCH',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ active: !button.classList.contains('active') })
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            // Toggle the button text
+                            button.innerText = button.innerText === 'Deactivate' ? 'Activate' : 'Deactivate';
+                            // Toggle the button class
+                            button.classList.toggle('active');
+                            button.classList.toggle('inactive');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error toggling approval:', error);
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>

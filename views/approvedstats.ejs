@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Stats</title>
+    <link rel="stylesheet" href="/attendancestats.css">
+    <!-- Include Chart.js library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Attendance Stats</h1>
+    </header>
+    <main>
+        <div class="container">
+            <button onclick="location.href='/'">Home</button>
+            
+            <div class="attendance-data">
+                <h2>Attendance Data for <%= user.name %></h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% attendanceData.forEach(data => { %>
+                            <tr>
+                                <td><%= data.Date %></td>
+                                <td><%= data.Time %></td>
+                                <td><%= data.Status %></td>
+                            </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Attendance Stats Section -->
+            <div class="attendance-stats">
+                <h2>Attendance Stats</h2>
+                <canvas id="attendanceChart"></canvas>
+            </div>
+
+            <!-- Attendance Percentages Section -->
+            <div class="attendance-percentages">
+                <h3>Attendance Percentages</h3>
+                <ul>
+                    <li>Present: <span id="presentPercentage"></span>%</li>
+                    <li>Absent: <span id="absentPercentage"></span>%</li>
+                    <li>Late: <span id="latePercentage"></span>%</li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function logout() {
+            alert('Logout successful!');
+            window.location.href = 'login'; 
+        }
+
+        // Populate pie chart with data
+        var ctx = document.getElementById('attendanceChart').getContext('2d');
+        var attendanceData = {
+            labels: ['Present', 'Absent', 'Late'],
+            datasets: [{
+                data: [48, 22, 30], // Example data percentages
+                backgroundColor: ['#36A2EB', '#FF6384', '#FFCE56']
+            }]
+        };
+        var myPieChart = new Chart(ctx, {
+            type: 'pie',
+            data: attendanceData
+        });
+
+        // Calculate and display attendance percentages
+        var total = attendanceData.datasets[0].data.reduce((a, b) => a + b, 0);
+        var presentPercentage = ((attendanceData.datasets[0].data[0] / total) * 100).toFixed(2);
+        var absentPercentage = ((attendanceData.datasets[0].data[1] / total) * 100).toFixed(2);
+        var latePercentage = ((attendanceData.datasets[0].data[2] / total) * 100).toFixed(2);
+
+        document.getElementById('presentPercentage').innerText = presentPercentage;
+        document.getElementById('absentPercentage').innerText = absentPercentage;
+        document.getElementById('latePercentage').innerText = latePercentage;
+    </script>
+</body>
+</html>
